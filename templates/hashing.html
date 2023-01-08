@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Encoding Service</title>
+    <style>
+      body {
+        background-color: lightblue;
+      }
+      h1 {
+        color: black;
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      label, input[type="submit"] {
+        color: white;
+      }
+      input[type="text"], input[type="password"] {
+        width: 50%;
+        height: 30px;
+        margin: 10px 0;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: none;
+      }
+      input[type="submit"] {
+        width: 20%;
+        height: 40px;
+        background-color: green;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+      }
+      input[type="submit"]:hover {
+        background-color: darkgreen;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Encoding Service</h1>
+    <form method="post" action="/encode">
+      <label for="text">Website:</label><br>
+      <input type="text" id="text" name="text"><br><br>
+      <input type="submit" value="Submit">
+    </form>
+  </body>
+</html>

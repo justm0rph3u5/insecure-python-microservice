@@ -2,12 +2,12 @@ import requests
 from flask import Flask, request, render_template
 
 app = Flask(__name__)
+#Flag_1:{Flag_ThisIsFlag_1_000000}
 #SECRET_KEY = os.environ['SECRET_KEY']
 
 @app.route('/')
 def index():
     return render_template('index.html')
-
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -29,6 +29,21 @@ def login():
     else:
         # Login failed
         return 'Login failed'
+
+@app.route('/encode')
+def index():
+    return render_template('hashing.html')
+
+@app.route('/encservice', methods=['POST'])
+def encode():
+    encoded_text = request.form['text']
+    try:
+        cmd = 'echo ' + encoded_text + '|base64'
+        output = subprocess.check_output([cmd], shell=True)
+        return output
+
+    except Exception as e:
+        return str(e), 500
 
 @app.errorhandler(404)
 def not_found(error):

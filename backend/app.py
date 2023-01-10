@@ -10,9 +10,7 @@ app = Flask(__name__)
 SECRET_KEY='123'
 #SECRET_KEY = os.environ['SECRET_KEY']
 
-@app.route('/')
-def index():
-    return render_template('hashing.html')
+
 
 @app.route('/login', methods=['POST'])
 def login():
@@ -43,23 +41,14 @@ def protected():
         token = auth_header
         try:
             jwt.decode(token, SECRET_KEY, algorithms='HS256')
-            return '<h1>Access granted. <!--This is your flag: {FLAG_superman}--></h1>'
+            return '<h1>Access granted. <!--Flag_2:{Flag_MyFlag2_9928282}--></h1>'
         except jwt.DecodeError:
             return 'Invalid token', 401
     else:
         return 'Authentication required', 401
 
 
-@app.route('/encode', methods=['POST'])
-def encode():
-    encoded_text = request.form['text']
-    try:
-        cmd = 'echo ' + encoded_text + '|base64'
-        output = subprocess.check_output([cmd], shell=True)
-        return output
 
-    except Exception as e:
-        return str(e), 500
 
 @app.errorhandler(404)
 def not_found(error):

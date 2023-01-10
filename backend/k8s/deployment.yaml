@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: microservice2
-        image: gurubaba/microservice2:latest
+        image: justmorpheu5/microservice2:latest
         ports:
         - containerPort: 5001
         env:

@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: microservice1
-        image: gurubaba/microservice1:latest
+        image: justmorpheu5/microservice1:latest
         ports:
         - containerPort: 8080
         env:

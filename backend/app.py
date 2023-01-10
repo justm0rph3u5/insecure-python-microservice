@@ -7,8 +7,8 @@ import os
 
 app = Flask(__name__)
 
-#SECRET_KEY='123'
-SECRET_KEY = os.environ['SECRET_KEY']
+SECRET_KEY='123'
+#SECRET_KEY = os.environ['SECRET_KEY']
 
 @app.route('/')
 def index():

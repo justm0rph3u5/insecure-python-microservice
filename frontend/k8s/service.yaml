@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: microservice1
+  labels:
+    app: microservice1
+spec:
+  type: LoadBalancer
+  selector:
+    app: microservice1
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
+    nodePort: 30001

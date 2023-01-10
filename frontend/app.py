@@ -8,6 +8,28 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Get the username and password from the request
+    username = request.form['username']
+    password = request.form['password']
+
+    # Send a POST request to the second microservice with the username and password
+    url = 'http://microservice2.default.svc.cluster.local:5001/login'
+    payload = {'username': username, 'password': password}
+    headers = {'Content-Type': 'application/x-www-form-urlencoded'}
+    response = requests.post(url, data=payload, headers=headers)
+    #print (response.text)
+
+    # Check the response from the second microservice
+    if response.status_code == 200:
+        # Login successful
+        return (response.text)
+    else:
+        # Login failed
+        return 'Login failed'
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404

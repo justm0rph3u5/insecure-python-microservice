@@ -24,9 +24,6 @@
         owner: ubuntu
     - name: wait for kubeadm to initialize
       wait_for:
-        host: "{{ ansible_host }}"
-        port: 6443
-        state: started
         timeout: 60
     - name: install Pod network
       become: yes
@@ -35,3 +32,4 @@
       args:
         chdir: $HOME
         creates: pod_network_setup.txt
+

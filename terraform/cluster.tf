@@ -70,6 +70,14 @@ resource "aws_network_acl" "private_nacl" {
     to_port     = 80
   }
   egress {
+    rule_no = 200
+    protocol    = "tcp"
+    action      = "allow"
+    cidr_block  = "0.0.0.0/0"
+    from_port   = 443
+    to_port     = 443
+  }
+  egress {
     rule_no = 300
     protocol    = "tcp"
     action      = "allow"
@@ -102,13 +110,71 @@ resource "aws_key_pair" "ec2_key_pair" {
 }
 
 #Create master & slave nodes for kubernetes cluster
-# Create the EC2-1 instance in the private subnet
+# Create the EC2-master instance in the private subnet
 resource "aws_instance" "private_ec2_m" {
   ami = "ami-0ecc74eca1d66d8a6"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   subnet_id = aws_subnet.private_subnet.id
+  # Install and start the HTTP server
+  user_data = <<EOF
+#!/bin/bash
+set +e
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates
+set +e sudo apt-get remove -y docker docker-engine \
+  docker.io containerd runc
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  | sudo gpg --dearmor \
+  -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+# Configure docker to use overlay2 storage and systemd
+sudo mkdir -p /etc/docker
+cat <<POF | sudo tee /etc/docker/daemon.json
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {"max-size": "100m"},
+    "storage-driver": "overlay2"
+}
+POF
+# Restart docker to load new configuration
+sudo systemctl restart docker
+# Add docker to start up programs
+sudo systemctl enable docker
+# Allow current user access to docker command line
+sudo usermod -aG docker $USER
+# Add Kubernetes GPG key
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg \
+  https://packages.cloud.google.com/apt/doc/apt-key.gpg
+# Add Kubernetes apt repository
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" \
+  | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# Fetch package list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+# Prevent them from being updated automatically
+sudo apt-mark hold kubelet kubeadm kubectl
+# See if swap is enabled
+swapon --show
+# Turn off swap
+sudo swapoff -a
+# Disable swap completely
+sudo sed -i -e '/swap/d' /etc/fstab
+rm /etc/containerd/config.toml
+systemctl restart containerd
+EOF
+
+  root_block_device {
+    volume_size   = "20"
+
+  }
+  
 
   tags = {
     Name = "Master"
@@ -118,23 +184,137 @@ resource "aws_instance" "private_ec2_m" {
 # Create the EC2-1 instance in the private subnet
 resource "aws_instance" "private_ec2_1" {
   ami = "ami-0ecc74eca1d66d8a6"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   subnet_id = aws_subnet.private_subnet.id
+  # Install and start the HTTP server
+  user_data = <<EOF
+#!/bin/bash
+set +e
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates
+set +e sudo apt-get remove -y docker docker-engine \
+  docker.io containerd runc
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  | sudo gpg --dearmor \
+  -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+# Configure docker to use overlay2 storage and systemd
+sudo mkdir -p /etc/docker
+cat <<POF | sudo tee /etc/docker/daemon.json
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {"max-size": "100m"},
+    "storage-driver": "overlay2"
+}
+POF
+# Restart docker to load new configuration
+sudo systemctl restart docker
+# Add docker to start up programs
+sudo systemctl enable docker
+# Allow current user access to docker command line
+sudo usermod -aG docker $USER
+# Add Kubernetes GPG key
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg \
+  https://packages.cloud.google.com/apt/doc/apt-key.gpg
+# Add Kubernetes apt repository
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" \
+  | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# Fetch package list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+# Prevent them from being updated automatically
+sudo apt-mark hold kubelet kubeadm kubectl
+# See if swap is enabled
+swapon --show
+# Turn off swap
+sudo swapoff -a
+# Disable swap completely
+sudo sed -i -e '/swap/d' /etc/fstab
+rm /etc/containerd/config.toml
+systemctl restart containerd
+EOF
+
+  root_block_device {
+    volume_size   = "20"
+
+  }
 
   tags = {
     Name = "Worker-1"
   }
 }
 
-# Create the EC2-1 instance in the private subnet
+# Create the EC2-2 instance in the private subnet
 resource "aws_instance" "private_ec2_2" {
   ami = "ami-0ecc74eca1d66d8a6"
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
   subnet_id = aws_subnet.private_subnet.id
+  # Install and start the HTTP server
+  user_data = <<EOF
+#!/bin/bash
+set +e
+sudo apt-get update
+sudo apt-get install -y apt-transport-https ca-certificates
+set +e sudo apt-get remove -y docker docker-engine \
+  docker.io containerd runc 
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+  | sudo gpg --dearmor \
+  -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo \
+  "deb [arch=amd64 signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" \
+  | sudo tee /etc/apt/sources.list.d/docker.list
+sudo apt-get update
+sudo apt-get install -y docker-ce docker-ce-cli containerd.io
+# Configure docker to use overlay2 storage and systemd
+sudo mkdir -p /etc/docker
+cat <<POF | sudo tee /etc/docker/daemon.json
+{
+    "exec-opts": ["native.cgroupdriver=systemd"],
+    "log-driver": "json-file",
+    "log-opts": {"max-size": "100m"},
+    "storage-driver": "overlay2"
+}
+POF
+# Restart docker to load new configuration
+sudo systemctl restart docker
+# Add docker to start up programs
+sudo systemctl enable docker
+# Allow current user access to docker command line
+sudo usermod -aG docker $USER
+# Add Kubernetes GPG key
+sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg \
+  https://packages.cloud.google.com/apt/doc/apt-key.gpg
+# Add Kubernetes apt repository
+echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" \
+  | sudo tee /etc/apt/sources.list.d/kubernetes.list
+# Fetch package list
+sudo apt-get update
+sudo apt-get install -y kubelet kubeadm kubectl
+# Prevent them from being updated automatically
+sudo apt-mark hold kubelet kubeadm kubectl
+# See if swap is enabled
+swapon --show
+# Turn off swap
+sudo swapoff -a
+# Disable swap completely
+sudo sed -i -e '/swap/d' /etc/fstab
+rm /etc/containerd/config.toml
+systemctl restart containerd
+EOF
+  
+  root_block_device {
+    volume_size   = "20"
+
+  }
 
   tags = {
    Name = "Worker-2"
@@ -181,17 +361,96 @@ resource "aws_key_pair" "bastion_key_pair" {
   public_key = tls_private_key.bastion_key_pair.public_key_openssh
 }
 
+#Create a policy
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy
+resource "aws_iam_policy" "ec2_policy" {
+  name        = "ec2_policy_k8slab"
+  path        = "/"
+  description = "Policy to provide permission to EC2 Bastion host"
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": "ec2:DescribeInstances",
+            "Resource": "*"
+        }
+    ]
+})
+}
+
+#Create a role
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2_role"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17"
+    Statement = [
+      {
+        Action = "sts:AssumeRole"
+        Effect = "Allow"
+        Sid    = ""
+        Principal = {
+          Service = "ec2.amazonaws.com"
+        }
+      },
+    ]
+  })
+}
+
+#Attach role to policy
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_policy_attachment
+resource "aws_iam_policy_attachment" "ec2_policy_role" {
+  name       = "ec2_attachment"
+  roles      = [aws_iam_role.ec2_role.name]
+  policy_arn = aws_iam_policy.ec2_policy.arn
+}
+
+#Attach role to an instance profile
+#https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_instance_profile
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_profile"
+  role = aws_iam_role.ec2_role.name
+}
+
+
 # Create the Bastion host in the public VPC
 resource "aws_instance" "bastion_host" {
   ami = "ami-0ecc74eca1d66d8a6"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.bastion_key_pair.key_name
+  iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name
   vpc_security_group_ids = [aws_security_group.bastion_sg.id]
   subnet_id = aws_subnet.public_subnet.id
   associate_public_ip_address = true
+  user_data = <<EOF
+#!/bin/bash
+set +e
+DEBIAN_FRONTEND=noninteractive
+apt-get update
+apt-get install -y software-properties-common awscli
+bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Master' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_MASTER' >> /etc/hosts"
+bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-1' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_1' >> /etc/hosts"
+bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-2' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_2' >> /etc/hosts"
+set +e git clone https://github.com/justmorpheus/insecure-python-microservice /home/ubuntu
+mkdir /home/ubuntu/kube-cluster
+set +e cp /home/ubuntu/insecure-python-microservice/terraform/ansible/hosts  /home/ubuntu/kube-cluster/hosts
+set +e cp /home/ubuntu/insecure-python-microservice/terraform/ansible/ansible.cfg  /home/ubuntu/kube-cluster/hosts
+chown ubuntu:ubuntu -R /home/ubuntu/kube-cluster
+export ANSIBLE_CONFIG=/home/ubuntu/kube-cluster/ansible.cfg
+export ANSIBLE_INVENTORY=/home/ubuntu/kube-cluster/hosts
+EOF
+
+  
 
   tags = {
-    Name = "Bastion Host"
+    Name = "Bastion-Host"
   }
 }
 
@@ -278,7 +537,7 @@ resource "aws_eip" "nat_eip" {
 # Create the NAT gateway
 resource "aws_nat_gateway" "nat_gateway" {
   allocation_id = aws_eip.nat_eip.id
-  subnet_id     = aws_subnet.private_subnet.id
+  subnet_id     = aws_subnet.public_subnet.id
 }
 
 
@@ -290,21 +549,21 @@ output "bastion_host_public_ip" {
 
 
 # Output the private-ec2-master host private IP address
-output "private_ec2_private_ip" {
+output "private_ec2_private_ip_master" {
   value = aws_instance.private_ec2_m.private_ip
   description = "Private IP address of the Ec2 host"
 }
 
 
 # Output the private-ec2-slave-1 host private IP address
-output "private_ec2_private_ip" {
+output "private_ec2_private_ip_slave1" {
   value = aws_instance.private_ec2_1.private_ip
   description = "Private IP address of the Ec2 host"
 }
 
 
 # Output the private-ec2-slave-2 host private IP address
-output "private_ec2_private_ip" {
+output "private_ec2_private_ip_slave2" {
   value = aws_instance.private_ec2_2.private_ip
   description = "Private IP address of the Ec2 host"
 }

@@ -45,9 +45,9 @@
   gather_facts: false
   tasks:
     - name: frontend deployment
-      shell: kubectl -f /home/ubuntu/insecure-python-microservice/frontend/k8s/deployment.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/deployment.yaml
     - name: frontend service
-      shell: kubectl -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service.yaml
     - name: port forward frontend service
       shell: nohup kubectl port-forward svc/microservice1 8080:8080 --address='0.0.0.0'
 
@@ -56,9 +56,9 @@
   gather_facts: false
   tasks:
     - name: backend deployment
-      shell: kubectl -f /home/ubuntu/insecure-python-microservice/backend/k8s/deployment.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/backend/k8s/deployment.yaml
     - name: backend service
-      shell: kubectl -f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
+      shell: kubectl apply-f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
 
     
     

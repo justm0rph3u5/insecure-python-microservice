@@ -120,7 +120,6 @@ resource "aws_instance" "private_ec2_m" {
   # Install and start the HTTP server
   user_data = <<EOF
 #!/bin/bash
-set +e
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates
 set +e sudo apt-get remove -y docker docker-engine \
@@ -191,7 +190,6 @@ resource "aws_instance" "private_ec2_1" {
   # Install and start the HTTP server
   user_data = <<EOF
 #!/bin/bash
-set +e
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates
 set +e sudo apt-get remove -y docker docker-engine \
@@ -261,7 +259,6 @@ resource "aws_instance" "private_ec2_2" {
   # Install and start the HTTP server
   user_data = <<EOF
 #!/bin/bash
-set +e
 sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates
 set +e sudo apt-get remove -y docker docker-engine \
@@ -431,20 +428,20 @@ resource "aws_instance" "bastion_host" {
   associate_public_ip_address = true
   user_data = <<EOF
 #!/bin/bash
-set +e
 DEBIAN_FRONTEND=noninteractive
 apt-get update
-apt-get install -y software-properties-common awscli
+apt-get install -y software-properties-common awscli ansible
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Master' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_MASTER' >> /etc/hosts"
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-1' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_1' >> /etc/hosts"
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-2' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_2' >> /etc/hosts"
-set +e git clone https://github.com/justmorpheus/insecure-python-microservice /home/ubuntu
+git clone https://github.com/justmorpheus/insecure-python-microservice /home/ubuntu/insecure-python-microservice
 mkdir /home/ubuntu/kube-cluster
-set +e cp /home/ubuntu/insecure-python-microservice/terraform/ansible/hosts  /home/ubuntu/kube-cluster/hosts
-set +e cp /home/ubuntu/insecure-python-microservice/terraform/ansible/ansible.cfg  /home/ubuntu/kube-cluster/hosts
-chown ubuntu:ubuntu -R /home/ubuntu/kube-cluster
-export ANSIBLE_CONFIG=/home/ubuntu/kube-cluster/ansible.cfg
-export ANSIBLE_INVENTORY=/home/ubuntu/kube-cluster/hosts
+cp /home/ubuntu/insecure-python-microservice/infrastructure/ansible/hosts  /home/ubuntu/kube-cluster/hosts
+cp /home/ubuntu/insecure-python-microservice/infrastructure/ansible/ansible.cfg  /home/ubuntu/kube-cluster/ansible.cfg
+chown ubuntu:ubuntu -R /home/ubuntu/
+echo "ANSIBLE_CONFIG=/home/ubuntu/kube-cluster/ansible.cfg" >> /etc/environment
+echo "ANSIBLE_INVENTORY=/home/ubuntu/kube-cluster/hosts" >> /etc/environment
+source /etc/environment
 EOF
 
   

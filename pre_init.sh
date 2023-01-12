@@ -2,12 +2,8 @@
 set +e
 echo "Make sure terraform in installed"
 echo "Current AWS region is set to us-west-2"
-echo "Running git clone: "
 
-git clone https://github.com/justmorpheus/insecure-python-microservice
 
-alias cdtemp="cd insecure-python-microservice/terraform"
-cdtemp
 terraform init
 terraform apply --auto-approve
 

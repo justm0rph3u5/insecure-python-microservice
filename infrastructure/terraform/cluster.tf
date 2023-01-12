@@ -332,6 +332,13 @@ resource "aws_security_group" "private_sg" {
     protocol = "tcp"
     security_groups = [aws_security_group.bastion_sg.id]
   }
+  ingress {
+    description = "Allow SSH access"
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    self = true
+  }
   egress {
     description = "Allow outbound"
     from_port = 0

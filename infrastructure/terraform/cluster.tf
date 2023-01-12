@@ -112,7 +112,7 @@ resource "aws_key_pair" "ec2_key_pair" {
 #Create master & slave nodes for kubernetes cluster
 # Create the EC2-master instance in the private subnet
 resource "aws_instance" "private_ec2_m" {
-  ami = "ami-0ecc74eca1d66d8a6"
+  ami = "ami-0135afc6d226a70a4"
   instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
@@ -182,7 +182,7 @@ EOF
 
 # Create the EC2-1 instance in the private subnet
 resource "aws_instance" "private_ec2_1" {
-  ami = "ami-0ecc74eca1d66d8a6"
+  ami = "ami-0135afc6d226a70a4"
   instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
@@ -251,7 +251,7 @@ EOF
 
 # Create the EC2-2 instance in the private subnet
 resource "aws_instance" "private_ec2_2" {
-  ami = "ami-0ecc74eca1d66d8a6"
+  ami = "ami-0135afc6d226a70a4"
   instance_type = "t2.medium"
   key_name = aws_key_pair.ec2_key_pair.key_name
   vpc_security_group_ids = [aws_security_group.private_sg.id]
@@ -419,7 +419,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
 
 # Create the Bastion host in the public VPC
 resource "aws_instance" "bastion_host" {
-  ami = "ami-0ecc74eca1d66d8a6"
+  ami = "ami-0135afc6d226a70a4"
   instance_type = "t2.micro"
   key_name      = aws_key_pair.bastion_key_pair.key_name
   iam_instance_profile   = aws_iam_instance_profile.ec2_profile.name

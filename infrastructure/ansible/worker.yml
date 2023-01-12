@@ -36,7 +36,4 @@
         dest: /home/ubuntu/.kube/config
         owner: ubuntu
     - name: set permission of kube config
-      file:
-        path: /home/ubuntu/.kube/config
-        owner: "{{ ubuntu }}"
-        group: "{{ ubuntu }}"
+      shell: "sudo chown ubuntu:ubuntu -R /home/ubuntu/.kube"

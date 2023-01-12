@@ -449,8 +449,8 @@ chown ubuntu:ubuntu -R /home/ubuntu/
 echo "ANSIBLE_CONFIG=/home/ubuntu/kube-cluster/ansible.cfg" >> /etc/environment
 echo "ANSIBLE_INVENTORY=/home/ubuntu/kube-cluster/hosts" >> /etc/environment
 source /etc/environment
-ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/master.yaml
-ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/worker.yml 
+sudo ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/master.yaml
+sudo ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/worker.yml 
 EOF
 
   

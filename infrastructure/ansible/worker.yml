@@ -9,6 +9,11 @@
     - name: set join command
       set_fact:
         join_command: "{{ join_command_raw.stdout }}"
+    - name: fetch admin.conf from master
+      fetch:
+        src: /etc/kubernetes/admin.conf
+        dest: /tmp/config
+        flat: yes
 
 - hosts: workers
   become: yes
@@ -21,3 +26,17 @@
       args:
         chdir: $HOME
         creates: node_joined.txt
+    - name: create .kube directory
+      file:
+        path: /home/ubuntu/.kube
+        state: directory
+    - name: copy admin.conf from fetched location to worker
+      copy:
+        src: /tmp/config
+        dest: /home/ubuntu/.kube/config
+        owner: ubuntu
+    - name: set permission of kube config
+      file:
+        path: /home/ubuntu/.kube/config
+        owner: "{{ ubuntu }}"
+        group: "{{ ubuntu }}"

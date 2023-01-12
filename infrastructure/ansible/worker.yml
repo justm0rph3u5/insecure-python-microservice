@@ -1,4 +1,3 @@
----
 - hosts: master
   become: yes
   gather_facts: false
@@ -26,15 +25,24 @@
       args:
         chdir: $HOME
         creates: node_joined.txt
-    - name: create .kube directory
+    - name: create ubuntu .kube directory
       file:
         path: /home/ubuntu/.kube
         state: directory
-    - name: copy admin.conf from fetched location to worker
+    - name: create root .kube directory
+      file:
+        path: /root/.kube
+        state: directory
+    - name: copy admin.conf from fetched location to worker for ubuntu
       copy:
         src: /tmp/config
         dest: /home/ubuntu/.kube/config
         owner: ubuntu
+    - name: copy admin.conf from fetched location to worker for root
+      copy:
+        src: /tmp/config
+        dest: /home/ubuntu/.kube/config
+        owner: root
     - name: clone the deployment
       shell: git clone https://github.com/justmorpheus/insecure-python-microservice.git /home/ubuntu/insecure-python-microservice
     - name: set permission of /home/ubuntu
@@ -46,7 +54,6 @@
       retries: 5
       delay: 5
 
-      
 - hosts: worker1
   become: yes
   gather_facts: false

@@ -41,7 +41,7 @@
     - name: copy admin.conf from fetched location to worker for root
       copy:
         src: /tmp/config
-        dest: /home/ubuntu/.kube/config
+        dest: /root/.kube/config
         owner: root
     - name: clone the deployment
       shell: git clone https://github.com/justmorpheus/insecure-python-microservice.git /home/ubuntu/insecure-python-microservice

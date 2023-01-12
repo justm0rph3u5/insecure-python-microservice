@@ -39,6 +39,13 @@
       shell: git clone https://github.com/justmorpheus/insecure-python-microservice.git /home/ubuntu/insecure-python-microservice
     - name: set permission of /home/ubuntu
       shell: "sudo chown ubuntu:ubuntu -R /home/ubuntu/"
+    - name: Get the list of pods
+      command: kubectl get pods
+      register: pods_result
+      until: pods_result.rc == 0
+      retries: 5
+      delay: 5
+
       
 - hosts: worker1
   become: yes

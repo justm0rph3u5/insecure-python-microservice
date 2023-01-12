@@ -35,5 +35,30 @@
         src: /tmp/config
         dest: /home/ubuntu/.kube/config
         owner: ubuntu
-    - name: set permission of kube config
-      shell: "sudo chown ubuntu:ubuntu -R /home/ubuntu/.kube"
+    - name: clone the deployment
+      shell: git clone https://github.com/justmorpheus/insecure-python-microservice.git /home/ubuntu/insecure-python-microservice
+    - name: set permission of /home/ubuntu
+      shell: "sudo chown ubuntu:ubuntu -R /home/ubuntu/"
+      
+- hosts: worker1
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: frontend deployment
+      shell: kubectl -f /home/ubuntu/insecure-python-microservice/frontend/k8s/deployment.yaml
+    - name: frontend service
+      shell: kubectl -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service.yaml
+    - name: port forward frontend service
+      shell: nohup kubectl port-forward svc/microservice1 8080:8080 --address='0.0.0.0'
+
+- hosts: worker2
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: backend deployment
+      shell: kubectl -f /home/ubuntu/insecure-python-microservice/backend/k8s/deployment.yaml
+    - name: backend service
+      shell: kubectl -f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
+
+    
+    

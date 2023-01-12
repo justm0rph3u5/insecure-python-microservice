@@ -5,7 +5,7 @@ metadata:
   labels:
     app: microservice1
 spec:
-  type: LoadBalancer
+  type: NodePort
   selector:
     app: microservice1
   ports:

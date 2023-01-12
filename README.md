@@ -2,6 +2,11 @@
 Insecure Python Flask Application For Kubernetes (EKS) deployment
 
 
+git clone https://github.com/justmorpheus/insecure-python-microservice
+
+cd insecure-python-microservice/infrastructure/terraform
+
+
 To build and run the containers, follow these steps:
 
 Build the first microservice's container:

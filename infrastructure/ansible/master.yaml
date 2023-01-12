@@ -4,6 +4,17 @@
   tasks:
     - name: remove swap
       shell: "swapoff -a"
+    - name: Check if user data script is complete
+      shell: cat /var/log/cloud-init-output.log | grep "finished"
+      register: userdata_status
+      ignore_errors: true
+      retries: 5
+      delay: 15
+      until: userdata_status.stdout.find("finished") == 0
+    - name: Wait for user data script to complete
+      pause:
+        seconds: 60
+      when: userdata_status.rc != 0
     - name: initialize the cluster
       shell: kubeadm init --pod-network-cidr=10.244.0.0/16 >> cluster_initialized.txt
       args:

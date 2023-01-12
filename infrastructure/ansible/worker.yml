@@ -62,6 +62,12 @@
       shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/deployment.yaml
     - name: frontend service
       shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service.yaml
+    - name: Check kubectl get pods status
+      command: kubectl get pods
+      register: kubectl_pods_result
+      until: "\"Running\" in kubectl_pods_result.stdout"
+      retries: 5
+      delay: 5
     - name: port forward frontend service
       shell: nohup kubectl port-forward svc/microservice1 8080:8080 --address='0.0.0.0'
 

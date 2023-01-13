@@ -326,7 +326,14 @@ chown ubuntu:ubuntu -R /home/ubuntu/
 echo "ANSIBLE_CONFIG=/home/ubuntu/kube-cluster/ansible.cfg" >> /etc/environment
 echo "ANSIBLE_INVENTORY=/home/ubuntu/kube-cluster/hosts" >> /etc/environment
 source /etc/environment
-sleep 120
+sleep 10
+# Check if the file exists
+while [ ! -f /home/ubuntu/ec2_key.pem ]; do
+  echo "File not found, waiting for 5 seconds"
+  sleep 5
+done
+echo "File found, continuing with script"
+  
 echo "starting master playbook"
 sudo ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/master.yaml
 sleep 5

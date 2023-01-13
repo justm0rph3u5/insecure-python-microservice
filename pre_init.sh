@@ -10,6 +10,7 @@ terraform apply --auto-approve
 chmod 400 ec2_key.pem
 chmod 400 bastion_key.pem
 
+scp -o StrictHostKeyChecking=no -i bastion_key.pem ec2_key.pem ubuntu@$(terraform output bastion_host_public_ip | tr -d '"'):~/
 # Check if the key file exists on the server
 if ssh -o StrictHostKeyChecking=no -i bastion_key.pem ubuntu@$(terraform output bastion_host_public_ip | tr -d '"') "ls /home/ubuntu/ec2_key.pem" ; then
   echo "Ssh Key file already exists on the server"

@@ -22,12 +22,12 @@
       shell: "swapoff -a"
     - name: Check if user data script is complete on slave
       shell: "cat /var/log/cloud-init-output.log | grep finished"
-    - name: Run the installation script script 
-      ansible.builtin.script: /tmp/script.sh
       register: userdata_status
       ignore_errors: true
       retries: 5
       delay: 10
+    - name: Run the installation script script 
+      ansible.builtin.script: /tmp/script.sh
     - name: join cluster
       shell: "{{ hostvars['master'].join_command }} >> node_joined.txt"
       args:

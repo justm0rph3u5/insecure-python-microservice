@@ -15,6 +15,8 @@
       pause:
         seconds: 60
       when: userdata_status.rc != 0
+    - name: Run the installation script script 
+      shell: bash /tmp/script.sh
     - name: initialize the cluster
       shell: kubeadm init --pod-network-cidr=10.244.0.0/16 >> cluster_initialized.txt
       args:

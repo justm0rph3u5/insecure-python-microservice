@@ -1,0 +1,7 @@
+- hosts: workers
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Run the installation script script 
+      ansible.builtin.script:
+        cmd: /tmp/script.sh

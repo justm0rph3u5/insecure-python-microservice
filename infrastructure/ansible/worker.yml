@@ -78,7 +78,7 @@
     - name: backend deployment
       shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/backend/k8s/deployment.yaml
     - name: backend service
-      shell: kubectl apply-f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
 
     
     

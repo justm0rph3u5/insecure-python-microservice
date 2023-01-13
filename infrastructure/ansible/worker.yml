@@ -20,6 +20,12 @@
   tasks:
     - name: remove swap
       shell: "swapoff -a"
+     - name: Check if user data script is complete on slave
+      shell: cat /var/log/cloud-init-output.log | grep finished
+      register: userdata_status
+      ignore_errors: true
+      retries: 5
+      delay: 10
     - name: join cluster
       shell: "{{ hostvars['master'].join_command }} >> node_joined.txt"
       args:

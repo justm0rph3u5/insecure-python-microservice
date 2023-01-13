@@ -78,6 +78,9 @@
       delay: 5
     - name: port forward frontend service
       shell: nohup kubectl port-forward svc/microservice1 8080:8080 --address='0.0.0.0' > /dev/null 2>&1 &
+      async: 0
+      poll: 0
+      register: result
 
 - hosts: worker2
   become: yes

@@ -5,7 +5,7 @@
     - name: remove swap
       shell: "swapoff -a"
     - name: Check if user data script is complete
-      shell: cat /var/log/cloud-init-output.log | grep "finished"
+      shell: cat /var/log/cloud-init-output.log | grep finished
       register: userdata_status
       ignore_errors: true
       retries: 5

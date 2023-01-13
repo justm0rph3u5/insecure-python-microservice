@@ -123,9 +123,9 @@ resource "aws_instance" "private_ec2_m" {
   subnet_id = aws_subnet.private_subnet.id
   # Install and start the Kubeadm
   user_data = <<EOF
-  #!/bin/bash
-  wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
-  chmod +x /tmp/script.sh
+#!/bin/bash
+wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
+chmod +x /tmp/script.sh
 EOF
 
 
@@ -149,9 +149,9 @@ resource "aws_instance" "private_ec2_1" {
   subnet_id = aws_subnet.private_subnet.id
   # Install and start the Kubeadm
   user_data = <<EOF
-  #!/bin/bash
-  wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
-  chmod +x /tmp/script.sh
+#!/bin/bash
+wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
+chmod +x /tmp/script.sh
 EOF
 
   root_block_device {
@@ -173,9 +173,9 @@ resource "aws_instance" "private_ec2_2" {
   subnet_id = aws_subnet.private_subnet.id
   # Install and start the Kubeadm
   user_data = <<EOF
-  #!/bin/bash
-  wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
-  chmod +x /tmp/script.sh
+#!/bin/bash
+wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
+chmod +x /tmp/script.sh
 EOF
   
   root_block_device {

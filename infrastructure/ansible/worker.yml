@@ -71,7 +71,7 @@
     - name: Check kubectl get pods status
       command: kubectl get pods
       register: kubectl_pods_result
-      until: "\"Running\" in kubectl_pods_result.stdout"
+      until: "'Running' in kubectl_pods_result.stdout or 'ContainerCreating' in kubectl_pods_result.stdout"
       retries: 5
       delay: 5
     - name: port forward frontend service

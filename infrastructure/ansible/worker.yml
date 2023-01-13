@@ -21,7 +21,7 @@
     - name: remove swap
       shell: "swapoff -a"
     - name: Check if user data script is complete on slave
-      shell: cat /var/log/cloud-init-output.log | grep finished
+      shell: "cat /var/log/cloud-init-output.log | grep finished"
     - name: Run the installation script script 
       ansible.builtin.script: /tmp/script.sh
       register: userdata_status

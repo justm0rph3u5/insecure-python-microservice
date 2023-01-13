@@ -2,6 +2,8 @@
   become: yes
   gather_facts: false
   tasks:
+    - name: Run the installation script script 
+      ansible.builtin.script: /home/ubuntu/script.sh
     - name: get join command
       shell: kubeadm token create --print-join-command
       register: join_command_raw

@@ -32,7 +32,7 @@ def login():
         return 'Login failed'
 
 @app.route('/encode')
-def index():
+def encoder():
     return render_template('hashing.html')
 
 @app.route('/encservice', methods=['POST'])

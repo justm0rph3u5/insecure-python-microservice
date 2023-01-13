@@ -326,9 +326,16 @@ resource "aws_security_group" "private_sg" {
   vpc_id = aws_vpc.my_vpc.id
 
   ingress {
-    description = "Allow SSH access"
+    description = "Allow Bastion access"
     from_port = 22
     to_port = 22
+    protocol = "tcp"
+    security_groups = [aws_security_group.bastion_sg.id]
+  }
+  ingress {
+    description = "Allow application running on 8080"
+    from_port = 8080
+    to_port = 8080
     protocol = "tcp"
     security_groups = [aws_security_group.bastion_sg.id]
   }

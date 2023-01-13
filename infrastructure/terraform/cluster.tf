@@ -3,6 +3,10 @@ provider "aws" {
   region = "us-west-2"
 }
 
+resource "random_string" "example" {
+  length = 5
+}
+
 # Create the VPC
 resource "aws_vpc" "my_vpc" {
   cidr_block = "10.0.0.0/16"
@@ -22,7 +26,7 @@ resource "aws_subnet" "public_subnet" {
   map_public_ip_on_launch = true
 
   tags = {
-    Name = "Public Subnet"
+    Name = "Public-Subnet-${random_string.example.result}"
   }
 }
 
@@ -33,7 +37,7 @@ resource "aws_subnet" "private_subnet" {
   availability_zone = "us-west-2a"
 
   tags = {
-    Name = "Private Subnet"
+    Name = "Private-Subnet-${random_string.example.result}"
   }
 }
 
@@ -176,7 +180,7 @@ EOF
   
 
   tags = {
-    Name = "Master"
+    Name = "Master-${random_string.example.result}"
   }
 }
 
@@ -240,7 +244,7 @@ EOF
   }
 
   tags = {
-    Name = "Worker-1"
+    Name = "Worker-1-${random_string.example.result}"
   }
 }
 
@@ -304,7 +308,7 @@ EOF
   }
 
   tags = {
-   Name = "Worker-2"
+   Name = "Worker-2-${random_string.example.result}"
   }
 }
 
@@ -457,7 +461,7 @@ EOF
   
 
   tags = {
-    Name = "Bastion-Host"
+    Name = "Bastion-Host-${random_string.example.result}"
   }
 }
 

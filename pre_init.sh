@@ -19,10 +19,16 @@ else
   scp -o StrictHostKeyChecking=no -i bastion_key.pem ec2_key.pem ubuntu@$(terraform output bastion_host_public_ip | tr -d '"'):~/
 fi
 
-echo "Wait for 6-7 minutes while infra deployment is happening. "
-sleep 385
-echo "Now ssh into bastion to access the application "
-echo "To ssh: ssh -D 9090 -o StrictHostKeyChecking=no -i bastion_key.pem ubuntu@$(terraform output bastion_host_public_ip | tr -d '"') "
+echo "Wait for 10 minutes while infra deployment is happening. "
+sleep 400
+
+echo "Enabling kubectl forward proxy to access internal applicatio. "
+ssh -o ProxyCommand="ssh -i bastion_key.pem -W %h:%p ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')" -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@$(terraform output private_ec2_private_ip_slave1 | tr -d '"') "nohup kubectl port-forward svc/microservice1 8080:8080 --address='0.0.0.0' >/dev/null 2>&1 &"
+
+echo "Enabling dynamic application level port forwarding."
+ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
+
+echo "Now enable socks proxy in the browser and forward to localhost:9090, use foxyproxy to access the internal application at $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
 
 echo "To cleanup run: terraform destroy --auto-approve"
 

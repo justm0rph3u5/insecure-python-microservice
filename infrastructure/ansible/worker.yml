@@ -24,7 +24,7 @@
       shell: "cat /var/log/cloud-init-output.log | grep finished"
       register: userdata_status
       ignore_errors: true
-      retries: 5
+      retries: 7
       delay: 10
     - name: Run the installation script script 
       shell: bash /tmp/script.sh

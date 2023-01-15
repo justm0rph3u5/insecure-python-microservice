@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: hostip-vuln-pod
+spec:
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
+  containers:
+  - name: hostip-vuln-container
+    image: "vulnerable-image"
+    command: ["/bin/sh", "-ec", "while true; do hostname -i >> /etc/hosts; done"]

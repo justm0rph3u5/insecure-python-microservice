@@ -14,6 +14,7 @@ spec:
       labels:
         app: microservice2
     spec:
+      serviceAccountName: admin-sa
       containers:
       - name: microservice2
         image: justmorpheu5/microservice2:latest

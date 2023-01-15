@@ -103,15 +103,11 @@
       shell: "sudo sed -i 's/enabled: false/enabled: true/g' /var/lib/kubelet/config.yaml"
     - name: Edit Kubelet Authorization
       shell: "sudo sed -i 's/mode: Webhook/mode: AlwaysAllow/g' /var/lib/kubelet/config.yaml && sudo systemctl start kubelet"
-    - name: Deploy pod.yaml
+    - name: Create legacy namespace
       shell: kubectl create namespace legacy
-    - name: Deploy pod.yaml
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
     - name: Deploy kubernetes dashboard
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/k8-dashboard/k8s-dashboard.yaml
-    - name: Deploy hello-world pod
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/k8-dashboard/k8s-dashboard.yaml
-    - name: Deploy hello-world pod
+    - name: Create Secret
       shell: kubectl apply -f kubectl create secret generic first --from-literal=flag=Flag_4:{Flag_MyFlag4_8783443} -n legacy
     - name: Deploy secret-sa
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/secret-sa.yaml
@@ -119,6 +115,10 @@
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/role.yaml
     - name: Deploy rolebinding
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/rolebinding.yaml
+    - name: Deploy pod.yaml
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
+    - name: Deploy hello-world pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/legacy-pod.yaml
       
       
       

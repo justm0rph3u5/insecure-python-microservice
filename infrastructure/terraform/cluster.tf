@@ -188,6 +188,30 @@ EOF
   }
 }
 
+# Create the EC2-3 instance in the private subnet
+resource "aws_instance" "private_ec2_3" {
+  ami = "ami-0135afc6d226a70a4"
+  instance_type = "t2.medium"
+  key_name = aws_key_pair.ec2_key_pair.key_name
+  vpc_security_group_ids = [aws_security_group.private_sg.id]
+  subnet_id = aws_subnet.private_subnet.id
+  # Install and start the Kubeadm
+  user_data = <<EOF
+#!/bin/bash
+wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
+chmod +x /tmp/script.sh
+EOF
+  
+  root_block_device {
+    volume_size   = "20"
+
+  }
+
+  tags = {
+   Name = "Worker-3-${random_string.example.result}"
+  }
+}
+
 
 # Create the security group for the Private host
 resource "aws_security_group" "private_sg" {

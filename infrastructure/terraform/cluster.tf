@@ -240,7 +240,6 @@ resource "aws_security_group" "private_sg" {
     protocol = "-1"
     self = true
   }
-  }
   ingress {
     description = "Allow kubernetes Dashboard"
     from_port = 30033

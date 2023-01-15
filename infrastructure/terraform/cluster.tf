@@ -342,6 +342,7 @@ apt-get install -y software-properties-common awscli ansible
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Master*' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_MASTER' >> /etc/hosts"
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-1*' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_1' >> /etc/hosts"
 bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-2*' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_2' >> /etc/hosts"
+bash -c "echo $(aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-3*' --query 'Reservations[*].Instances[*].PrivateIpAddress' --output text --region us-west-2) 'IP_WORKER_3' >> /etc/hosts"
 git clone https://github.com/justmorpheus/insecure-python-microservice /home/ubuntu/insecure-python-microservice
 mkdir /home/ubuntu/kube-cluster
 cp /home/ubuntu/insecure-python-microservice/infrastructure/ansible/hosts  /home/ubuntu/kube-cluster/hosts

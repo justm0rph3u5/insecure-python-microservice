@@ -104,7 +104,7 @@
     - name: Edit Kubelet Authorization
       shell: "sudo sed -i 's/mode: Webhook/mode: AlwaysAllow/g' /var/lib/kubelet/config.yaml && sudo systemctl start kubelet"
     - name: Deploy pod.yaml
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/CVE-2021-25741/pod.yaml
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
       
       
       

@@ -66,6 +66,12 @@
   become: yes
   gather_facts: false
   tasks:
+    - name: Service account deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
+    - name: Cluster Role Deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/cluster-role.yaml
+    - name: Cluster Role Binding deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/cluster-role-binding.yaml
     - name: frontend deployment
       shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/deployment.yaml
     - name: frontend service

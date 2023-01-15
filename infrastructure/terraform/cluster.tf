@@ -486,3 +486,10 @@ output "private_ec2_private_ip_slave2" {
   value = aws_instance.private_ec2_2.private_ip
   description = "Private IP address of the Ec2 host"
 }
+  
+
+# Output the private-ec2-slave-3 host private IP address
+output "private_ec2_private_ip_slave3" {
+  value = aws_instance.private_ec2_3.private_ip
+  description = "Private IP address of the Ec2 host"
+}

@@ -14,6 +14,7 @@ spec:
       labels:
         app: microservice1
     spec:
+      serviceAccountName: admin-sa
       containers:
       - name: microservice1
         image: justmorpheu5/microservice1:latest
@@ -21,4 +22,4 @@ spec:
         - containerPort: 8080
         env:
         - name: SECRET_KEY
-          value: secret
+          value: {this_is_flag_xx}

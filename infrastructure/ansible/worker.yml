@@ -87,4 +87,14 @@
       shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/backend/k8s/service.yaml
 
     
+- hosts: worker3
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Stop Kubelet
+      shell: sudo systemctl stop kubelet
+    - name: Edit Kubelet Authentication
+      shell: sudo sed -i 's/enabled: false/enabled: true/g' /var/lib/kubelet/config.yaml
+    - name: Edit Kubelet Authorization
+      shell: sudo sed -i 's/mode: Webhook/mode: AlwaysAllow/g' /var/lib/kubelet/config.yaml && sudo systemctl start kubelet
     

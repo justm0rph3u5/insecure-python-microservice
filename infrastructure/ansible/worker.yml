@@ -119,6 +119,8 @@
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
     - name: Deploy hello-world pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/legacy-pod.yaml
+    - name: Create secret in shared memory
+      shell: echo "flag=Flag_5:{Flag_MyFlag5_3338889}" > /dev/shm/flag.txt
       
       
       

@@ -22,4 +22,4 @@ spec:
         - containerPort: 8080
         env:
         - name: SECRET_KEY
-          value: Flag_1:{Flag_ThisIsFlag_1_0645372}
+          value: Flag_3:{Flag_ThisIsFlag_3_0645372}

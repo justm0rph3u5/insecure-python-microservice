@@ -5,6 +5,7 @@ Overly permissive RBAC
 Anonymous Dashboard: type thisisunsafe
 Secret
 Host IPS read secret
+dive
 
 privileged true
 Hostpath

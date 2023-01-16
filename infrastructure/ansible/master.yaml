@@ -8,8 +8,8 @@
       shell: cat /var/log/cloud-init-output.log | grep finished
       register: userdata_status
       ignore_errors: true
-      retries: 5
-      delay: 10
+      retries: 8
+      delay: 15
       until: userdata_status.stdout.find("finished") != -1
     - name: Wait for user data script to complete
       pause:

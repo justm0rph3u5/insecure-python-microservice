@@ -123,6 +123,9 @@
       shell: echo "flag=Flag_5:{Flag_MyFlag5_3338889}" > /dev/shm/flag.txt
     - name: Deploy bad pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/badpod.yaml
+    - name: Deploy failed pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/deepdive-aws.yaml
+      ignore_errors: true
       
       
       

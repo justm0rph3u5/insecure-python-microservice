@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: aws-comm
+  namespace: legacy
+spec:
+  containers:
+  - name: aws-container
+    image: justmorpheu5/vulnerable-deepdive:v1.1
+    command: [ "/bin/sh", "-c", "--" ]
+    args: [ "while true; do sleep 30; done;" ]

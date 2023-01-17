@@ -6,9 +6,9 @@ Anonymous Dashboard: type thisisunsafe
 Secret
 Host IPS read secret
 dive
+Docker in Docker sock
 
 privileged true
 Hostpath
-Docker in Docker sock
 Kyverno 
 

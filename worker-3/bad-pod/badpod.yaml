@@ -3,6 +3,9 @@ kind: Pod
 metadata:
   name: hostipc-vuln-pod
   namespace: legacy
+  labels:
+    app: myapp-legacy
+    protected: true
 spec:
   hostIPC: true
   hostNetwork: true

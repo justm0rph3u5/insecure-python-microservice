@@ -126,6 +126,9 @@
     - name: Deploy failed pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/deepdive-aws.yaml
       ignore_errors: true
+    - name: Deploy DIND pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+      ignore_errors: true
       
       
       

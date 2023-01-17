@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dind-exploit
+  namespace: legacy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dind-exploit
+  template:
+    metadata:
+      labels:
+        app: dind-exploit
+    spec:
+      hostIPC: true
+      hostPID: true
+      containers:
+      - name: dnd-donotdisturb
+        image: "docker:latest"
+        command: ["/bin/sh", "-c", "dockerd & sleep infinity"]
+        securityContext:
+          privileged: true
+        volumeMounts:
+        - mountPath: /var/run/docker.sock
+          name: dockersock
+          readOnly: false
+      volumes:
+      - name: dockersock
+        hostPath:
+          path: /var/run/docker.sock

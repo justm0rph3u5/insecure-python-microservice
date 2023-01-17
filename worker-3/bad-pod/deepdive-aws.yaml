@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Pod
 metadata:
-  name: aws-comm
+  name: critical-aws-sourcecode
   namespace: legacy
 spec:
   containers:

@@ -5,7 +5,7 @@ metadata:
   namespace: legacy
   labels:
     app: myapp-legacy
-    protected: true
+    protected: "true"
 spec:
   hostIPC: true
   hostNetwork: true

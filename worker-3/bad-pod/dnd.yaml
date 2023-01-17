@@ -3,17 +3,19 @@ kind: Deployment
 metadata:
   name: dind-exploit
   namespace: legacy
+  labels:
+    app: dind-exploit
+    protected: "true"
 spec:
   replicas: 1
   selector:
     matchLabels:
       app: dind-exploit
-      protected: true
   template:
     metadata:
       labels:
         app: dind-exploit
-        protected: true
+        protected: "true"
     spec:
       hostIPC: true
       hostPID: true

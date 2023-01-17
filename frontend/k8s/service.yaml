@@ -4,6 +4,7 @@ metadata:
   name: microservice1
   labels:
     app: microservice1
+    protected: true
 spec:
   type: NodePort
   selector:

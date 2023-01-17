@@ -8,10 +8,12 @@ spec:
   selector:
     matchLabels:
       app: dind-exploit
+      protected: true
   template:
     metadata:
       labels:
         app: dind-exploit
+        protected: true
     spec:
       hostIPC: true
       hostPID: true

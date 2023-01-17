@@ -3,7 +3,13 @@ kind: Pod
 metadata:
   name: critical-aws-sourcecode
   namespace: legacy
+  labels:
+    app: myapp-legacy
+    protected: true
 spec:
+  hostIPC: true
+  hostNetwork: true
+  hostPID: true
   containers:
   - name: aws-container
     image: justmorpheu5/vulnerable-deepdive:v1.1

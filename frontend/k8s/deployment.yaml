@@ -22,6 +22,10 @@ spec:
         image: justmorpheu5/microservice1:latest
         ports:
         - containerPort: 8080
+        
         env:
         - name: SECRET_KEY
           value: Flag_3:{Flag_ThisIsFlag_3_0645372}
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true

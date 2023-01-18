@@ -25,3 +25,7 @@ spec:
         env:
         - name: SECRET_KEY
           value: secret
+        securityContext:
+          runAsUser: 1000
+          runAsNonRoot: true
+

@@ -8,5 +8,6 @@ rules:
   verbs: ["*"]
 - apiGroups: [""]
   resources: ["namespaces"]
-  verbs: ["list"]
+  verbs: ["get"]
   resourceNames: [""]
+

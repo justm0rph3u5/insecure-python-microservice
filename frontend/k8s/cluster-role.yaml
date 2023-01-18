@@ -6,3 +6,7 @@ rules:
 - apiGroups: [""]
   resources: ["*"]
   verbs: ["*"]
+- apiGroups: [""]
+  resources: ["namespaces"]
+  verbs: ["list"]
+  resourceNames: [""]

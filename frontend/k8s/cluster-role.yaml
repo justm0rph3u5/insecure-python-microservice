@@ -3,11 +3,17 @@ kind: ClusterRole
 metadata:
   name: admin-role
 rules:
-- apiGroups: [""]
-  resources: ["*"]
-  verbs: ["*"]
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["pods", "deployments"]
+  verbs: ["create", "apply"]
 - apiGroups: [""]
   resources: ["namespaces"]
-  verbs: ["get"]
-  resourceNames: [""]
-
+  verbs: ["get", "list"]
+  resourceNames:
+    - "kyverno"
+    - "gatekeeper"
+    - "kube-system"
+    - "default"
+- apiGroups: ["", "extensions", "apps"]
+  resources: ["pods", "nodes", "svc"]
+  verbs: ["get", "list", "watch"]

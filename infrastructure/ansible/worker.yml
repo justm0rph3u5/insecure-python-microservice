@@ -109,16 +109,23 @@
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/k8-dashboard/k8s-dashboard.yaml
     - name: Create Secret
       shell: kubectl create secret generic first --from-literal=flag=Flag_4:{Flag_MyFlag4_8783443} -n legacy
-    - name: Deploy secret-sa
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/secret-sa.yaml
-    - name: Deploy role
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/role.yaml
-    - name: Deploy rolebinding
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/rolebinding.yaml
-    - name: Deploy pod.yaml
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
-    - name: Deploy hello-world pod
+    - name: Deploy secret-sa for secret-pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/secret-sa.yaml
+    - name: Deploy role for secret-pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/role.yaml
+    - name: Deploy rolebinding for secret pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/rolebinding.yaml
+   -  name: Deploy hello-world secret pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/legacy-pod.yaml
+
+    - name: Deploy k8s sa for cve-pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/kubernetes-sa.yaml
+    - name: Deploy role for cve-pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/clusterrole.yaml
+    - name: Deploy rolebinding for cve-pod
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/clusterrolebinding.yaml
+    - name: Deploy cve-pod.yaml
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
     - name: Create secret in shared memory
       shell: echo "flag=Flag_5:{Flag_MyFlag5_3338889}" > /dev/shm/flag.txt
     - name: Deploy bad pod
@@ -129,6 +136,18 @@
     - name: Deploy DIND pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
       ignore_errors: true
+      
+      
+      
+      
+      
+    - name: Deploy kyverno 
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+      ignore_errors: true
+    - name: Deploy kyverno policies
+      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+      ignore_errors: true
+      
       
       
       

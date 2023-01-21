@@ -136,13 +136,8 @@
     - name: Deploy DIND pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
       ignore_errors: true
-      
-      
-      
-      
-      
-    - name: Deploy kyverno 
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+    - name: Deploy kyverno deploy
+      shell: kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/release-1.7/config/release/install.yaml
       ignore_errors: true
     - name: Deploy kyverno policies
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml

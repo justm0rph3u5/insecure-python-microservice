@@ -115,7 +115,7 @@
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/role.yaml
     - name: Deploy rolebinding for secret pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/rolebinding.yaml
-   -  name: Deploy hello-world secret pod
+    - name: Deploy hello-world secret pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/legacy-pod.yaml
     - name: Deploy k8s sa for cve-pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/kubernetes-sa.yaml

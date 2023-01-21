@@ -117,7 +117,6 @@
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/secret-pod/rolebinding.yaml
    -  name: Deploy hello-world secret pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/legacy-pod.yaml
-
     - name: Deploy k8s sa for cve-pod
       shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/CVE-2021-25741/kubernetes-sa.yaml
     - name: Deploy role for cve-pod
@@ -140,7 +139,7 @@
       shell: kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/release-1.7/config/release/install.yaml
       ignore_errors: true
     - name: Deploy kyverno policies
-      shell: kubectl apply -f https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+      shell: kubectl create -f /home/ubuntu/insecure-python-microservice/kyverno/
       ignore_errors: true
       
       

@@ -17,3 +17,6 @@ rules:
 - apiGroups: ["", "extensions", "apps"]
   resources: ["pods", "nodes", "svc"]
   verbs: ["get", "list", "watch"]
+- apiGroups: [""]
+  resources: ["pods/exec"]
+  verbs: ["create"]

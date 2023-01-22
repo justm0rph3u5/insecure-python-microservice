@@ -15,3 +15,4 @@ spec:
     image: justmorpheu5/vulnerable-deepdive:v1.1
     command: [ "/bin/sh", "-c", "--" ]
     args: [ "while true; do sleep 30; done;" ]
+  nodeName: Worker-3

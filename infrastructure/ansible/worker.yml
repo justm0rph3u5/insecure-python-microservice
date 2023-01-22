@@ -66,30 +66,7 @@
       register: pods_result
       until: pods_result.rc == 0
       retries: 5
-      delay: 5
-      
-      
-- hosts: worker1
-  become: yes
-  gather_facts: false
-  tasks:
-    - name: Service account deployment
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
-      
- - hosts: worker3
-  become: yes
-  gather_facts: false
-  tasks:
-    - name: Service account deployment
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
- 
- - hosts: worker3
-  become: yes
-  gather_facts: false
-  tasks:
-    - name: Service account deployment
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
-      
+      delay: 5   
       
 - hosts: worker1
   become: yes
@@ -135,34 +112,34 @@
     - name: Create legacy namespace
       shell: kubectl create namespace legacy
     - name: Deploy kubernetes dashboard
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/k8-dashboard/k8s-dashboard.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/k8-dashboard/k8s-dashboard.yaml
     - name: Create Secret
       shell: kubectl create secret generic first --from-literal=flag=Flag_4:{Flag_MyFlag4_8783443} -n legacy
     - name: Deploy secret-sa for secret-pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/secret-pod/secret-sa.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/secret-pod/secret-sa.yaml
     - name: Deploy role for secret-pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/secret-pod/role.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/secret-pod/role.yaml
     - name: Deploy rolebinding for secret pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/secret-pod/rolebinding.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/secret-pod/rolebinding.yaml
     - name: Deploy hello-world secret pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/secret-pod/legacy-pod.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/secret-pod/legacy-pod.yaml
     - name: Deploy k8s sa for cve-pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/CVE-2021-25741/kubernetes-sa.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/CVE-2021-25741/kubernetes-sa.yaml
     - name: Deploy role for cve-pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/CVE-2021-25741/clusterrole.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/CVE-2021-25741/clusterrole.yaml
     - name: Deploy rolebinding for cve-pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/CVE-2021-25741/clusterrolebinding.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/CVE-2021-25741/clusterrolebinding.yaml
     - name: Deploy cve-pod.yaml
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/CVE-2021-25741/pod.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/CVE-2021-25741/pod.yaml
     - name: Create secret in shared memory
       shell: echo "flag=Flag_5:{Flag_MyFlag5_3338889}" > /dev/shm/flag.txt
     - name: Deploy bad pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/bad-pod/badpod.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/bad-pod/badpod.yaml
     - name: Deploy failed pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/bad-pod/deepdive-aws.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/bad-pod/deepdive-aws.yaml
       ignore_errors: true
     - name: Deploy DIND pod
-      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/main/worker-3/bad-pod/dnd.yaml
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/worker-3/bad-pod/dnd.yaml
       ignore_errors: true
     - name: Deploy kyverno deploy
       shell: kubectl create -f https://raw.githubusercontent.com/kyverno/kyverno/release-1.7/config/release/install.yaml

@@ -67,7 +67,30 @@
       until: pods_result.rc == 0
       retries: 5
       delay: 5
-
+      
+      
+- hosts: worker1
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Service account deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
+      
+ - hosts: worker3
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Service account deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
+ 
+ - hosts: worker3
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Service account deployment
+      shell: kubectl apply -f /home/ubuntu/insecure-python-microservice/frontend/k8s/service-sa.yaml
+      
+      
 - hosts: worker1
   become: yes
   gather_facts: false

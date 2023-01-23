@@ -149,6 +149,12 @@
       ignore_errors: true
       
       
-      
+- hosts: workers
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: post deployment cleanup
+      shell: "rm -rf /home/ubuntu/insecure-python-microservice && rm -rf /home/ubuntu/.kube" 
+      ignore_errors: true
       
       

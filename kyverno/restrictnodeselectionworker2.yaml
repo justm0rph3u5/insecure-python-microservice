@@ -1,0 +1,22 @@
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: block-node-worker-2
+  annotations:
+    policies.kyverno.io/category: Best Practices
+    policies.kyverno.io/description: >-
+      Blocking Pod creation on node worker-2 .      
+spec:
+  validationFailureAction: enforce
+  rules:
+  - name: block-node-worker-2
+    match:
+      any:
+      - resources:
+          kinds:
+          - Pod
+    validate:
+      message: "Only Worker Node 2 is allowed to be used in nodeName"  
+      pattern:
+        spec:
+          nodeName: "Worker-2"

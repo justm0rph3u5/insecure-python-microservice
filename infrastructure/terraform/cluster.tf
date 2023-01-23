@@ -243,7 +243,7 @@ resource "aws_security_group" "private_sg" {
   ingress {
     description = "Allow kubernetes Dashboard"
     from_port = 30033
-    to_port = 30333
+    to_port = 30033
     protocol = "tcp"
     security_groups = [aws_security_group.bastion_sg.id]
   }

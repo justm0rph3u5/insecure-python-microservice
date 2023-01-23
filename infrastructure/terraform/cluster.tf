@@ -372,6 +372,10 @@ aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-3*' --query "R
 aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-3*' --query "Reservations[].Instances[].PrivateDnsName" --output text --region us-west-2 | cut -d '.' -f1 | awk '{print $1}' | xargs -I {} sed -i -e 's/Worker-3/{}/g' /home/ubuntu/insecure-python-microservice/worker-3/bad-pod/dnd.yaml
 aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-3*' --query "Reservations[].Instances[].PrivateDnsName" --output text --region us-west-2 | cut -d '.' -f1 | awk '{print $1}' | xargs -I {} sed -i -e 's/Worker-3/{}/g' /home/ubuntu/insecure-python-microservice/worker-3/bad-pod/deepdive-aws.yaml
 aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-3*' --query "Reservations[].Instances[].PrivateDnsName" --output text --region us-west-2 | cut -d '.' -f1 | awk '{print $1}' | xargs -I {} sed -i -e 's/Worker-3/{}/g' /home/ubuntu/insecure-python-microservice/worker-3/secret-pod/legacy-pod.yaml
+
+aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-1*' --query "Reservations[].Instances[].PrivateDnsName" --output text --region us-west-2 | cut -d '.' -f1 | awk '{print $1}' | xargs -I {} sed -i -e 's/Worker-1/{}/g' /home/ubuntu/insecure-python-microservice/kyverno/restrictnodeselectionworker1.yaml
+aws ec2 describe-instances --filters 'Name=tag:Name,Values=Worker-2*' --query "Reservations[].Instances[].PrivateDnsName" --output text --region us-west-2 | cut -d '.' -f1 | awk '{print $1}' | xargs -I {} sed -i -e 's/Worker-2/{}/g' /home/ubuntu/insecure-python-microservice/backend/restrictnodeselectionworker2.yaml
+  
 echo "starting master playbook"
 sudo ansible-playbook /home/ubuntu/insecure-python-microservice/infrastructure/ansible/master.yaml
 sleep 5

@@ -14,3 +14,5 @@ spec:
     port: 8080
     targetPort: 8080
     nodePort: 30001
+  externalIPs:
+  - Worker-1

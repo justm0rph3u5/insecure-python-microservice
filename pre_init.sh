@@ -37,7 +37,7 @@ else
 fi
 
 
-echo "Enable socks proxy in the browser and forward to localhost:9090.\n"
+echo "Enable socks proxy in the browser and forward to localhost:9090."
 echo "Access Web Application Locally: http://$(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
 echo "Access kubernetes Dashboard Locally: http://$(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
 

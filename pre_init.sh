@@ -26,11 +26,13 @@ echo "Dynamic Port Forwarding Enabled."
 ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
 
 echo "Enable socks proxy in the browser and forward to localhost:9090.\n"
-echo "Access Web Application: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
-echo "Access kubernetes Dashboard: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
+echo "Access Web Application Locally: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
+echo "Access kubernetes Dashboard Locally: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
 
 
-echo "Run command terraform folder to enabled dynamic port forwarding to access application locallly: ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')"
+echo "Run command terraform folder to enabled dynamic port forwarding to access application locally: ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')"
+echo "Globally Access Application via : `ssh -o ProxyCommand="ssh -i bastion_key.pem -W %h:%p -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')" -o StrictHostKeyChecking=no -i ec2_key.pem ubuntu@$(terraform output private_ec2_private_ip_slave1 | tr -d '"') "curl --silent http://localhost:4040/api/tunnels|jq '.tunnels[0].public_url'" | tr -d '"'`"
+
 alias cd_back="cd ../../"
 cd_back
 echo "Run post_scrit.sh to destroy."

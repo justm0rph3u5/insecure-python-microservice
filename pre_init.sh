@@ -1,10 +1,9 @@
 #!/bin/bash
-set +e
 echo "Make sure terraform in installed"
 echo "Current AWS region is set to us-west-2"
 
-alias cdtemp="cd infrastructure/terraform"
-cdtemp
+alias cd_temp="cd infrastructure/terraform"
+cd_temp
 terraform init
 terraform apply --auto-approve
 chmod 400 ec2_key.pem
@@ -19,14 +18,20 @@ else
   scp -o StrictHostKeyChecking=no -i bastion_key.pem ec2_key.pem ubuntu@$(terraform output bastion_host_public_ip | tr -d '"'):~/
 fi
 
-echo "Wait for 10 minutes while infra deployment is happening. "
+echo "Deployment In Progress.\n"
 sleep 500
+echo "Deployment Is Complete.\n"
 
-echo "Enabling dynamic application level port forwarding."
+echo "Dynamic Port Forwarding Enabled."
 ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
 
-echo "Now enable socks proxy in the browser and forward to localhost:9090, use foxyproxy to access the internal application at $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
-echo "Access kubernetes Dashboard at $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
+echo "Enable socks proxy in the browser and forward to localhost:9090.\n"
+echo "Access Web Application: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
+echo "Access kubernetes Dashboard: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
 
-echo "To cleanup run: terraform destroy --auto-approve"
+alias cd_back="cd ../../"
+cd_back
+echo "Run command terraform folder to enabled dynamic port forwarding to access application locallly: ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')"
+echo "Run post_scrit.sh to destroy.\n"
+echo "Lab Deployed Successfully."
 

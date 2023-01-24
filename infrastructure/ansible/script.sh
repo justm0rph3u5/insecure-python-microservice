@@ -11,10 +11,10 @@ sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg \
 echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" \
   | sudo tee /etc/apt/sources.list.d/kubernetes.list
 sudo apt-get update
-sudo apt-get install -y apt-transport-https ca-certificates
+sudo apt-get install -y apt-transport-https ca-certificates 
 set +e sudo apt-get remove -y docker docker-engine \
   docker.io containerd runc
-sudo apt-get install -y docker-ce docker-ce-cli containerd.io kubeadm=1.22.0-00 kubectl kubelet=1.22.0-00
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io kubeadm=1.22.0-00 kubectl kubelet=1.22.0-00 nginx jq
 # Configure docker to use overlay2 storage and systemd
 sudo mkdir -p /etc/docker
 cat <<POF | sudo tee /etc/docker/daemon.json
@@ -41,3 +41,4 @@ sudo swapoff -a
 sudo sed -i -e '/swap/d' /etc/fstab
 rm /etc/containerd/config.toml
 systemctl restart containerd
+

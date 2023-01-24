@@ -127,16 +127,15 @@ resource "aws_instance" "private_ec2_m" {
 wget https://raw.githubusercontent.com/justmorpheus/insecure-python-microservice/main/infrastructure/ansible/script.sh -O /tmp/script.sh
 chmod +x /tmp/script.sh
 EOF
-
-
   root_block_device {
     volume_size   = "20"
 
   }
-  
-
   tags = {
     Name = "Master-${random_string.example.result}"
+  }
+  timeouts {
+    create = "15m"
   }
 }
 
@@ -162,6 +161,9 @@ EOF
   tags = {
     Name = "Worker-1-${random_string.example.result}"
   }
+  timeouts {
+    create = "15m"
+  }
 }
 
 # Create the EC2-2 instance in the private subnet
@@ -186,6 +188,9 @@ EOF
   tags = {
    Name = "Worker-2-${random_string.example.result}"
   }
+  timeouts {
+    create = "15m"
+  }
 }
 
 # Create the EC2-3 instance in the private subnet
@@ -209,6 +214,9 @@ EOF
 
   tags = {
    Name = "Worker-3-${random_string.example.result}"
+  }
+  timeouts {
+    create = "15m"
   }
 }
 
@@ -387,6 +395,9 @@ EOF
 
   tags = {
     Name = "Bastion-Host-${random_string.example.result}"
+  }
+  timeouts {
+    create = "15m"
   }
 }
 

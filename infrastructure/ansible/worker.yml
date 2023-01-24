@@ -157,4 +157,12 @@
       shell: "rm -rf /home/ubuntu/insecure-python-microservice && rm -rf /home/ubuntu/.kube" 
       ignore_errors: true
       
+- hosts: worker1
+  become: yes
+  gather_facts: false
+  tasks:
+    - name: Expose service via ngrok
+      shell: chmod + /home/ubuntu/insecure-python-microservice/infrastructure/ansible/script_nginx.sh && /bin/bash /home/ubuntu/insecure-python-microservice/infrastructure/ansible/script_nginx.sh
+    - name: Run ngrok in the background
+      shell: ngrok http localhost:7777 --log=stdout > /dev/null &
       

@@ -25,9 +25,22 @@ echo "Deployment Is Complete."
 echo "Dynamic Port Forwarding Enabled."
 ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
 
+# Check if the URL is accessible
+status_code=$(curl -s -o /dev/null -w "%{http_code}" http://$(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080)
+
+# Check if the status code is 200 (OK)
+if [ $status_code -eq 200 ]; then
+  sleep 1;
+  echo "URL is accessible"
+else
+  echo "URL is not accessible, re-running SSH command for port forwarding"
+  ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
+fi
+
+
 echo "Enable socks proxy in the browser and forward to localhost:9090.\n"
-echo "Access Web Application Locally: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
-echo "Access kubernetes Dashboard Locally: $(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
+echo "Access Web Application Locally: http://$(terraform output private_ec2_private_ip_slave1 | tr -d '"'):8080"
+echo "Access kubernetes Dashboard Locally: http://$(terraform output private_ec2_private_ip_slave1 | tr -d '"'):30033"
 
 
 echo "Run command terraform folder to enabled dynamic port forwarding to access application locally: ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')"

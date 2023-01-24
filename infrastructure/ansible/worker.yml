@@ -154,9 +154,6 @@
   tasks:
     - name: Expose service via ngrok
       shell: chmod +x /home/ubuntu/insecure-python-microservice/infrastructure/ansible/script_nginx.sh && /bin/bash /home/ubuntu/insecure-python-microservice/infrastructure/ansible/script_nginx.sh
-    - name: Run ngrok in the background
-      shell: ngrok http localhost:7777 --log=stdout > /dev/null &
-      
         
 - hosts: workers
   become: yes

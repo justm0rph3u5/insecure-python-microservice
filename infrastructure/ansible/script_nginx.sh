@@ -22,4 +22,4 @@ server {
 EOF
 sudo ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/reverse-proxy.conf
 service nginx restart
-ngrok http localhost:7777 --log=stdout > /dev/null &
+sleep 1;

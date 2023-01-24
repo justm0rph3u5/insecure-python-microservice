@@ -8,4 +8,4 @@ cp /home/ubuntu/insecure-python-microservice/infrastructure/ansible/reverse-prox
 ln -s /etc/nginx/sites-available/reverse-proxy.conf /etc/nginx/sites-enabled/reverse-proxy.conf
 service nginx restart
 sleep 1;
-ngrok http localhost:7777 --log=stdout > /dev/null &
+nohup ngrok http localhost:7777 --log=stdout > /dev/null 2>&1 &

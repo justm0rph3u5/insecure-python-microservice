@@ -47,6 +47,6 @@ echo "Globally Access Application via : `ssh -o ProxyCommand="ssh -i bastion_key
 
 alias cd_back="cd ../../"
 cd_back
-echo "Run post_scrit.sh to destroy."
+echo "To Destroy Lab, run: source post_scrit.sh"
 echo "Lab Deployed Successfully."
 

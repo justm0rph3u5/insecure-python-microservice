@@ -14,7 +14,7 @@ sudo apt-get update
 sudo apt-get install -y apt-transport-https ca-certificates 
 set +e sudo apt-get remove -y docker docker-engine \
   docker.io containerd runc
-sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io kubeadm=1.22.0-00 kubectl kubelet=1.22.0-00 nginx jq
+sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io kubeadm=1.22.0-00 kubectl kubelet=1.22.0-00
 # Configure docker to use overlay2 storage and systemd
 sudo mkdir -p /etc/docker
 cat <<POF | sudo tee /etc/docker/daemon.json

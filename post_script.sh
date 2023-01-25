@@ -21,6 +21,10 @@ cd_temp
 # Run terraform destroy command
 terraform destroy --auto-approve
 
+# Remove terraform related files and folders
+rm -rf .terraform*
+rm -rf terraform.tfstate*
+
 # change the directory back to the main
 alias cd_temp="cd ../../"
 cd_temp

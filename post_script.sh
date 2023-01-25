@@ -2,7 +2,7 @@
 
 echo "###############################################################################"
 echo "#                             KubeKrack                                       #"
-echo "#                  Vulnerable Kubernetes Demo Lab                             #"
+echo "#                   A Vulnerable Kubernetes Lab                               #"
 echo "#                                                                             #"
 echo "#                           Deletion Script                                   #"
 echo "#                                                                             #"

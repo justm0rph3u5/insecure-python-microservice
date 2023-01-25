@@ -58,9 +58,9 @@ status_code=$(export http_proxy=socks5://127.0.0.1:9090 https_proxy=socks5://127
 # Check if the status code is 200 (OK)
 if [ $status_code -eq 200 ]; then
   sleep 1;
-  echo "URL is accessible"
+  echo "# URL is accessible"
 else
-  echo "URL is not accessible, re-running SSH command for port forwarding"
+  echo "# URL is not accessible, re-running SSH command for port forwarding"
   ssh -D 9090 -f -C -q -N -i bastion_key.pem -o StrictHostKeyChecking=no ubuntu@$(terraform output bastion_host_public_ip | tr -d '"')
 fi
 echo "###############################################################################"

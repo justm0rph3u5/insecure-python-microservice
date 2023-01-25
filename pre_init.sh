@@ -1,7 +1,7 @@
 #!/bin/bash
 echo "###############################################################################"
 echo "#                           KubeKrack                                         #"
-echo "#              A Vulnerable Kubernetes Demo Lab                               #"
+echo "#                 A Vulnerable Kubernetes Lab                                 #"
 echo "#                  Created by justmorpheus                                    #"
 echo "#                 Email: namaste@securitydojo.co.in                           #"
 echo "###############################################################################"

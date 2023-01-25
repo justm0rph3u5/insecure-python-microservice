@@ -3,7 +3,7 @@ echo "##########################################################################
 echo "#                           KubeKrack                                         #"
 echo "#              A Vulnerable Kubernetes Demo Lab                               #"
 echo "#                  Created by justmorpheus                                    #"
-echo "#                 Email: namaste@securitydojo.co.in                            #"
+echo "#                 Email: namaste@securitydojo.co.in                           #"
 echo "###############################################################################"
 
 echo "###############################################################################"
